@@ -17,6 +17,7 @@ public class First_controller {
         return mv;
     }
 
+
     @RequestMapping("/baidu")
     public String baidu() throws Exception {
         return "www0725";
