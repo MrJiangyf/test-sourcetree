@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>www.0725.com</groupId>
+  <artifactId>learn_maven</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <!--  5. 子模块跟当前父模块形成聚合继承效果：有些项目会创建多个maven模块，这里需要同时解决依赖继承和统一打包管理，因此会同时创建聚合继承关系的父子模块-->
+  <modules>
+    <module>03_maven</module>
+  </modules>
+
+  <!--  1.会将项目打成war包，对于web项目来说，通常会设置为war-->
+  <packaging>pom</packaging>
+
+  <name>learn_maven Maven Webapp</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+
+    <!-- 4.统一管理版本号-->
+    <spring-version>5.2.4.RELEASE</spring-version>
+  </properties>
+
+
+<!--  2.要使用的jar包的gav信息放到这里，这样maven就可以自动下载相关jar包了-->
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+<!--  3.设置依赖在项目的使用阶段:-->
+<!--  compile：适用于所有阶段，编译、运行、测试、打包都会包含到项目。-->
+<!--  test：测试阶段，只能在test目录下使用junit相关类。-->
+<!--  runtime：适用运行和测试阶段。-->
+<!--  provided：编译、运行阶段使用。-->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring-version}</version>
+    </dependency>
+
+
+  </dependencies>
+
+  <build>
+    <finalName>learn_maven</finalName>
+    <!--加如下配置防止maven打包时mapper文件打包不进去（在项目的mapper模块下）-->
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.xml</include>
+        </includes>
+        <filtering>false</filtering>
+      </resource>
+
+    <!--加如下配置防止resources目录下的spring配置文件找不到（在项目的web模块下）-->
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.xml</include>
+        </includes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+  </build>
+</project>
